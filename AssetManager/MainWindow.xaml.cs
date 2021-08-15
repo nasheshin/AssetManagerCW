@@ -1,13 +1,25 @@
-﻿namespace AssetManager
+﻿using System;
+using System.Windows;
+
+namespace AssetManager
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
-        public MainWindow()
+        private readonly Window _authorizationWindow;
+        
+        public MainWindow(Window authorizationWindow)
         {
+            _authorizationWindow = authorizationWindow;
+            
             InitializeComponent();
+        }
+
+        private void OnMainWindowClosed(object sender, EventArgs e)
+        {
+            _authorizationWindow.Show();
         }
     }
 }
