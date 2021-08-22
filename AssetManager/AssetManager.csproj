@@ -60,21 +60,28 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Compile Include="AuthorizationWindows\AuthorizationWindow.xaml.cs">
+        <Compile Include="AssetControls\OperationsControl.xaml.cs">
+          <DependentUpon>OperationsControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="AssetControls\OperationsControlViewModel.cs" />
+        <Compile Include="Authorization\AuthorizationWindow.xaml.cs">
           <DependentUpon>AuthorizationWindow.xaml</DependentUpon>
         </Compile>
-        <Compile Include="AuthorizationWindows\RegisterControl.xaml.cs">
+        <Compile Include="Authorization\RegisterControl.xaml.cs">
           <DependentUpon>RegisterControl.xaml</DependentUpon>
         </Compile>
-        <Compile Include="AuthorizationWindows\RegisterControlViewModel.cs" />
-        <Compile Include="AuthorizationWindows\SignInControl.xaml.cs">
+        <Compile Include="Authorization\RegisterControlViewModel.cs" />
+        <Compile Include="Authorization\SignInControl.xaml.cs">
           <DependentUpon>SignInControl.xaml</DependentUpon>
         </Compile>
-        <Compile Include="AuthorizationWindows\SignInControlViewModel.cs" />
-        <Compile Include="RelayCommand.cs" />
-        <Page Include="AuthorizationWindows\AuthorizationWindow.xaml" />
-        <Page Include="AuthorizationWindows\RegisterControl.xaml" />
-        <Page Include="AuthorizationWindows\SignInControl.xaml" />
+        <Compile Include="Authorization\SignInControlViewModel.cs" />
+        <Compile Include="Utils\Config.cs" />
+        <Compile Include="Utils\RelayCommand.cs" />
+        <Compile Include="Utils\SessionInfo.cs" />
+        <Page Include="AssetControls\OperationsControl.xaml" />
+        <Page Include="Authorization\AuthorizationWindow.xaml" />
+        <Page Include="Authorization\RegisterControl.xaml" />
+        <Page Include="Authorization\SignInControl.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -83,7 +90,6 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="Config.cs" />
         <Compile Include="MainWindow.xaml.cs">
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>

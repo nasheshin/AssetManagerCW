@@ -4,8 +4,9 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using AssetManager.Annotations;
 using AssetManager.Models;
+using AssetManager.Utils;
 
-namespace AssetManager.AuthorizationWindows
+namespace AssetManager.Authorization
 {
     public class SignInControlViewModel
     {
@@ -64,6 +65,8 @@ namespace AssetManager.AuthorizationWindows
                 return;
             }
 
+            SessionInfo.UserId = foundUserName.Id;
+            
             var mainWindow = new MainWindow(Application.Current.MainWindow);
             mainWindow.Show();
             Application.Current.MainWindow?.Hide();

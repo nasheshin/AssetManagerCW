@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace AssetManager.AuthorizationWindows
+﻿namespace AssetManager.Authorization
 {
     public partial class RegisterControl
     {

@@ -1,4 +1,4 @@
-﻿namespace AssetManager.AuthorizationWindows
+﻿namespace AssetManager.Authorization
 {
     public partial class AuthorizationWindow
     {

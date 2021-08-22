@@ -4,8 +4,9 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using AssetManager.Annotations;
 using AssetManager.Models;
+using AssetManager.Utils;
 
-namespace AssetManager.AuthorizationWindows
+namespace AssetManager.Authorization
 {
     public class RegisterControlViewModel : INotifyPropertyChanged
     {
