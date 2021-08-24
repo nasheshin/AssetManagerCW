@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using AssetManager.Annotations;
 using AssetManager.Models;
 using AssetManager.Utils;
@@ -12,23 +13,22 @@ namespace AssetManager.AssetControls
     public sealed class OperationsControlViewModel : INotifyPropertyChanged
     {
         private readonly DataContext _database;
-        private readonly List<Operation> _operations;
-        private readonly List<Broker> _brokers;
-        private readonly List<AssetAnalytic> _assetAnalytics;
+        private List<Operation> _operations;
+        private List<Broker> _brokers;
+        private List<AssetAnalytic> _assetAnalytics;
         
-        private readonly ObservableCollection<object> _operationsView;
+        private ObservableCollection<object> _operationsView;
         
-        public OperationsControlViewModel()
+        public OperationsControlViewModel(AddOperationsControlVm addOperationsControlVm)
         {
             _database = new DataContext();
-            _operations = _database.Operations.ToList();
-            _brokers = _database.Brokers.ToList();
-            _assetAnalytics = _database.AssetAnalytics.ToList();
-            
-            var userOperations = _operations.Where(operation => operation.UserId == SessionInfo.UserId);
-            _operationsView = new ObservableCollection<object>(userOperations.Select(ConvertOperation));
+
+            addOperationsControlVm.UpdatedDatabase += UpdateOperations;
+            UpdateOperations();
         }
 
+        public ObservableCollection<object> OperationsView => _operationsView;
+        
         private object ConvertOperation(Operation operation)
         {
             var typeName = operation.Type == 1 ? "Покупка" : "Продажа";
@@ -43,7 +43,15 @@ namespace AssetManager.AssetControls
             };
         }
 
-        public ObservableCollection<object> OperationsView => _operationsView;
+        private void UpdateOperations()
+        {
+            _operations = _database.Operations.ToList();
+            _brokers = _database.Brokers.ToList();
+            _assetAnalytics = _database.AssetAnalytics.ToList();
+            
+            var userOperations = _operations.Where(operation => operation.UserId == SessionInfo.UserId);
+            _operationsView = new ObservableCollection<object>(userOperations.Select(ConvertOperation));
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

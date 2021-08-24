@@ -8,10 +8,14 @@ namespace AssetManager.AssetControls
         
         public OperationsControl()
         {
-            InitializeComponent();
+            var addOperationsControl = new AddOperationsControl();
 
-            _viewModel = new OperationsControlViewModel();
+            _viewModel = new OperationsControlViewModel(addOperationsControl.ViewModel);
             DataContext = _viewModel;
+            
+            InitializeComponent();
+            
+            WrapPanel.Children.Add(addOperationsControl);
         }
     }
 }

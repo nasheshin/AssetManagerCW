@@ -60,10 +60,22 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="AssetControls\AddOperationsControl.xaml.cs">
+          <DependentUpon>AddOperationsControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="AssetControls\AddOperationsControlVm.cs" />
+        <Compile Include="AssetControls\AnalyticsControl.xaml.cs">
+          <DependentUpon>AnalyticsControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="AssetControls\AnalyticsControlVm.cs" />
         <Compile Include="AssetControls\OperationsControl.xaml.cs">
           <DependentUpon>OperationsControl.xaml</DependentUpon>
         </Compile>
         <Compile Include="AssetControls\OperationsControlViewModel.cs" />
+        <Compile Include="AssetControls\PortfolioControl.xaml.cs">
+          <DependentUpon>PortfolioControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="AssetControls\PortfolioControlVm.cs" />
         <Compile Include="Authorization\AuthorizationWindow.xaml.cs">
           <DependentUpon>AuthorizationWindow.xaml</DependentUpon>
         </Compile>
@@ -78,7 +90,10 @@
         <Compile Include="Utils\Config.cs" />
         <Compile Include="Utils\RelayCommand.cs" />
         <Compile Include="Utils\SessionInfo.cs" />
+        <Page Include="AssetControls\AddOperationsControl.xaml" />
+        <Page Include="AssetControls\AnalyticsControl.xaml" />
         <Page Include="AssetControls\OperationsControl.xaml" />
+        <Page Include="AssetControls\PortfolioControl.xaml" />
         <Page Include="Authorization\AuthorizationWindow.xaml" />
         <Page Include="Authorization\RegisterControl.xaml" />
         <Page Include="Authorization\SignInControl.xaml" />

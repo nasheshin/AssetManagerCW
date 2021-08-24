@@ -17,6 +17,11 @@ namespace AssetManager
             InitializeComponent();
         }
 
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
         private void OnMainWindowClosed(object sender, EventArgs e)
         {
             _authorizationWindow.Show();

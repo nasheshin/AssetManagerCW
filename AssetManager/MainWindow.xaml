@@ -5,22 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AssetManager"
         xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
+        xmlns:assetControls="clr-namespace:AssetManager.AssetControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
         Closed="OnMainWindowClosed">
     <Grid>
         <TabControl>
             <TabItem Header="Портфель">
-                
+                <assetControls:PortfolioControl/>
             </TabItem>
             <TabItem Header="Операции">
-                
+                <assetControls:OperationsControl/>
             </TabItem>
             <TabItem Header="Новости">
                 
             </TabItem>
             <TabItem Header="Аналитика">
-                
+                <assetControls:AnalyticsControl/>
             </TabItem>
             <TabItem Header="Социальная сеть">
                 

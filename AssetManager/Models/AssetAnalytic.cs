@@ -7,7 +7,7 @@
         public int BuyRate { get; set; }
         public int SellRate { get; set; }
 
-        public string StringBuyRate => BuyRate == -1 ? "Неизвестно" : BuyRate.ToString();
-        public string StringSellRate => SellRate == -1 ? "Неизвестно" : SellRate.ToString();
+        public string StringBuyRate => BuyRate == -1 ? AssetName : BuyRate.ToString();
+        public string StringSellRate => SellRate == -1 ? AssetName : SellRate.ToString();
     }
 }
