@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using AssetManager.Annotations;
+using AssetManager.DataUtils;
 using AssetManager.Models;
 using AssetManager.Utils;
 
@@ -10,7 +11,7 @@ namespace AssetManager.Authorization
 {
     public class SignInControlViewModel
     {
-        private readonly DataContext _database;
+        private readonly DataProcessorUsers _dataProcessorUsers;
         
         private string _userName;
         private string _password;
@@ -19,7 +20,7 @@ namespace AssetManager.Authorization
 
         public SignInControlViewModel()
         {
-            _database = new DataContext();
+            _dataProcessorUsers = App.DataProcessorUsers;
         }
         
         public string UserName
@@ -52,7 +53,7 @@ namespace AssetManager.Authorization
 
         private void SignIn()
         {
-            var foundUserName = _database.Users.FirstOrDefault(user => user.Name == _userName);
+            var foundUserName = _dataProcessorUsers.Users.FirstOrDefault(user => user.Name == _userName);
             if (foundUserName == null)
             {
                 MessageBox.Show("Неверный логин или пароль");
@@ -67,7 +68,7 @@ namespace AssetManager.Authorization
 
             SessionInfo.UserId = foundUserName.Id;
             
-            var mainWindow = new MainWindow(Application.Current.MainWindow);
+            var mainWindow = new MainWindow(Application.Current.MainWindow, foundUserName.Id);
             mainWindow.Show();
             Application.Current.MainWindow?.Hide();
         }

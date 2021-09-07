@@ -5,21 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:AssetManager.AssetControls"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="400" d:DesignWidth="1000">
     <Grid>
         <WrapPanel>
-            <DataGrid ItemsSource="{Binding PortfolioView}" AutoGenerateColumns="False" CanUserAddRows="False"
-                      IsReadOnly="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Название актива" Binding="{Binding AssetName}"/>
-                    <DataGridTextColumn Header="Тикер актива" Binding="{Binding AssetTicker}"/>
-                    <DataGridTextColumn Header="Тип актива" Binding="{Binding AssetType}"/>
-                    <DataGridTextColumn Header="Брокер" Binding="{Binding BrokerName}"/>
-                    <DataGridTextColumn Header="Кол-во" Binding="{Binding Count}"/>
-                    <DataGridTextColumn Header="Привлекательность покупки" Binding="{Binding BuyRate}"/>
-                    <DataGridTextColumn Header="Привлекательность продажи" Binding="{Binding SellRate}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <ScrollViewer>
+                <DataGrid ItemsSource="{Binding PortfolioView}" AutoGenerateColumns="False" IsReadOnly="True"
+                          CanUserAddRows="False" SelectedItem="{Binding SelectedPortfolioElement}"
+                          CanUserResizeColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn MaxWidth="100" Header="Название актива" Binding="{Binding AssetName}"/>
+                        <DataGridTextColumn MaxWidth="90" Header="Тикер актива" Binding="{Binding AssetTicker}"/>
+                        <DataGridTextColumn MaxWidth="80" Header="Тип актива" Binding="{Binding AssetType}"/>
+                        <DataGridTextColumn MaxWidth="70" Header="Брокер" Binding="{Binding BrokerName}"/>
+                        <DataGridTextColumn MaxWidth="50" Header="Кол-во" Binding="{Binding Count}"/>
+                        <DataGridTextColumn Header="Привлекательность покупки" Binding="{Binding BuyRate}"/>
+                        <DataGridTextColumn Header="Привлекательность продажи" Binding="{Binding SellRate}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+            <StackPanel>
+                <Border Background="GhostWhite" BorderBrush="Gray" BorderThickness="1">
+                    <local:BuyAssetControl x:Name="BuyAssetControl"/>
+                </Border>
+                <Border Background="GhostWhite" BorderBrush="Gray" BorderThickness="1" Margin="0, 10, 0, 0">
+                    <local:SellAssetControl x:Name="SellAssetControl" Margin="10, 10, 10, 10"/>
+                </Border>
+            </StackPanel>
         </WrapPanel>
     </Grid>
 </UserControl>

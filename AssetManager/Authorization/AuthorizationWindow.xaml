@@ -5,14 +5,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:authorization="clr-namespace:AssetManager.Authorization"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800">
+        Title="Авторизация" Height="200" Width="200"
+        ResizeMode="NoResize">
     <Grid>
         <TabControl>
             <TabItem Header="Авторизация">
-                <authorization:SignInControl/>
+                <Border Background="GhostWhite" BorderBrush="Gray" BorderThickness="1">
+                    <authorization:SignInControl  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
             </TabItem>
             <TabItem Header="Регистрация">
-                <authorization:RegisterControl/>
+                <Border Background="GhostWhite" BorderBrush="Gray" BorderThickness="1">
+                    <authorization:RegisterControl HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
             </TabItem>
         </TabControl>
     </Grid>

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using AssetManager.Annotations;
+using AssetManager.DataUtils;
 using AssetManager.Models;
 using AssetManager.Utils;
 
@@ -10,7 +11,7 @@ namespace AssetManager.Authorization
 {
     public class RegisterControlViewModel : INotifyPropertyChanged
     {
-        private readonly DataContext _database;
+        private readonly DataProcessorUsers _dataProcessorUsers;
         
         private string _userName;
         private string _password;
@@ -20,7 +21,7 @@ namespace AssetManager.Authorization
 
         public RegisterControlViewModel()
         {
-            _database = new DataContext();
+            _dataProcessorUsers = App.DataProcessorUsers;
         }
         
         public string UserName
@@ -69,16 +70,15 @@ namespace AssetManager.Authorization
                 return;
             }
             
-            var foundUserName = _database.Users.FirstOrDefault(user => user.Name == _userName);
+            var foundUserName = _dataProcessorUsers.Users.FirstOrDefault(user => user.Name == _userName);
             if (foundUserName != null)
             {
                 MessageBox.Show("Данное имя пользователя занято");
                 return;
             }
 
-            _database.Users.Add(new User {Name = _userName, Password = _password});
-            _database.SaveChanges();
-
+            _dataProcessorUsers.AddElement(new User {Name = _userName, Password = _password});
+            
             MessageBox.Show("Регистрация прошла успешно");
         }
         

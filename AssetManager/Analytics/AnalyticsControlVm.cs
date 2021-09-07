@@ -2,7 +2,7 @@
 using System.Linq;
 using AssetManager.Models;
 
-namespace AssetManager.AssetControls
+namespace AssetManager.Analytics
 {
     public class AnalyticsControlVm
     {

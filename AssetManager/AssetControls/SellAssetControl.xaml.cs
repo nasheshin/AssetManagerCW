@@ -2,13 +2,11 @@
 
 namespace AssetManager.AssetControls
 {
-    public partial class AnalyticsControl
+    public partial class SellAssetControl
     {
-        public AnalyticsControl()
+        public SellAssetControl()
         {
             InitializeComponent();
-
-            DataContext = new AnalyticsControlVm();
         }
     }
 }

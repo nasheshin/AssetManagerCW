@@ -3,11 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AssetManager"
-        xmlns:collections="clr-namespace:System.Collections;assembly=mscorlib"
         xmlns:assetControls="clr-namespace:AssetManager.AssetControls"
+        xmlns:newsControl="clr-namespace:AssetManager.NewsControl"
+        xmlns:socialPage="clr-namespace:AssetManager.SocialPage"
+        xmlns:analytics="clr-namespace:AssetManager.Analytics"
+        xmlns:operations="clr-namespace:AssetManager.Operations"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525"
+        Title="MainWindow" Height="500" Width="1000"
         Closed="OnMainWindowClosed">
     <Grid>
         <TabControl>
@@ -15,16 +17,16 @@
                 <assetControls:PortfolioControl/>
             </TabItem>
             <TabItem Header="Операции">
-                <assetControls:OperationsControl/>
+                <operations:OperationsControl/>
             </TabItem>
             <TabItem Header="Новости">
-                
+                <newsControl:NewsControl/>
             </TabItem>
             <TabItem Header="Аналитика">
-                <assetControls:AnalyticsControl/>
+                <analytics:AnalyticsControl/>
             </TabItem>
             <TabItem Header="Социальная сеть">
-                
+                <socialPage:SocialPageControl/>
             </TabItem>
         </TabControl>
     </Grid>

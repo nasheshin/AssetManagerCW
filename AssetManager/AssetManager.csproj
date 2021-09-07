@@ -60,22 +60,23 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Compile Include="AssetControls\AddOperationsControl.xaml.cs">
-          <DependentUpon>AddOperationsControl.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="AssetControls\AddOperationsControlVm.cs" />
-        <Compile Include="AssetControls\AnalyticsControl.xaml.cs">
+        <Compile Include="Analytics\AnalyticsControl.xaml.cs">
           <DependentUpon>AnalyticsControl.xaml</DependentUpon>
         </Compile>
-        <Compile Include="AssetControls\AnalyticsControlVm.cs" />
-        <Compile Include="AssetControls\OperationsControl.xaml.cs">
-          <DependentUpon>OperationsControl.xaml</DependentUpon>
+        <Compile Include="Analytics\AnalyticsControlVm.cs" />
+        <Compile Include="AssetControls\BuyAssetControlVm.cs" />
+        <Compile Include="AssetControls\BuyAssetControl.xaml.cs">
+          <DependentUpon>BuyAssetControl.xaml</DependentUpon>
         </Compile>
-        <Compile Include="AssetControls\OperationsControlViewModel.cs" />
         <Compile Include="AssetControls\PortfolioControl.xaml.cs">
           <DependentUpon>PortfolioControl.xaml</DependentUpon>
         </Compile>
         <Compile Include="AssetControls\PortfolioControlVm.cs" />
+        <Compile Include="AssetControls\PortfolioElementView.cs" />
+        <Compile Include="AssetControls\SellAssetControl.xaml.cs">
+          <DependentUpon>SellAssetControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="AssetControls\SellAssetControlVm.cs" />
         <Compile Include="Authorization\AuthorizationWindow.xaml.cs">
           <DependentUpon>AuthorizationWindow.xaml</DependentUpon>
         </Compile>
@@ -87,13 +88,41 @@
           <DependentUpon>SignInControl.xaml</DependentUpon>
         </Compile>
         <Compile Include="Authorization\SignInControlViewModel.cs" />
+        <Compile Include="DataUtils\DataProcessorBase.cs" />
+        <Compile Include="DataUtils\DataProcessorFactory.cs" />
+        <Compile Include="DataUtils\DataProcessorOperations.cs" />
+        <Compile Include="DataUtils\DataProcessorType.cs" />
+        <Compile Include="DataUtils\DataProcessorUsers.cs" />
+        <Compile Include="DataUtils\ErrorEventArgs.cs" />
+        <Compile Include="DataUtils\IDatabaseUpdated.cs" />
+        <Compile Include="DataUtils\OperationEventArgs.cs" />
+        <Compile Include="DataUtils\OperationsDataManager.cs" />
+        <Compile Include="DataUtils\OperationCommandType.cs" />
+        <Compile Include="NewsControl\NewsControl.xaml.cs">
+          <DependentUpon>NewsControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="NewsControl\NewsItemControl.xaml.cs">
+          <DependentUpon>NewsItemControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="Operations\OperationsControl.xaml.cs">
+          <DependentUpon>OperationsControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="Operations\OperationsControlViewModel.cs" />
+        <Compile Include="Operations\OperationView.cs" />
+        <Compile Include="SocialPage\PostControl.xaml.cs">
+          <DependentUpon>PostControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="SocialPage\SocialPageControl.xaml.cs">
+          <DependentUpon>SocialPageControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Include="SocialPage\SocialPageControlVm.cs" />
         <Compile Include="Utils\Config.cs" />
         <Compile Include="Utils\RelayCommand.cs" />
         <Compile Include="Utils\SessionInfo.cs" />
-        <Page Include="AssetControls\AddOperationsControl.xaml" />
-        <Page Include="AssetControls\AnalyticsControl.xaml" />
-        <Page Include="AssetControls\OperationsControl.xaml" />
+        <Page Include="Analytics\AnalyticsControl.xaml" />
+        <Page Include="AssetControls\BuyAssetControl.xaml" />
         <Page Include="AssetControls\PortfolioControl.xaml" />
+        <Page Include="AssetControls\SellAssetControl.xaml" />
         <Page Include="Authorization\AuthorizationWindow.xaml" />
         <Page Include="Authorization\RegisterControl.xaml" />
         <Page Include="Authorization\SignInControl.xaml" />
@@ -109,6 +138,11 @@
             <DependentUpon>MainWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="NewsControl\NewsControl.xaml" />
+        <Page Include="NewsControl\NewsItemControl.xaml" />
+        <Page Include="Operations\OperationsControl.xaml" />
+        <Page Include="SocialPage\PostControl.xaml" />
+        <Page Include="SocialPage\SocialPageControl.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Models\AssetAnalytic.cs" />
