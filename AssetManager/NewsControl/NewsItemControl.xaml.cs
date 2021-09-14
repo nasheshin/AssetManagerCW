@@ -9,7 +9,7 @@ namespace AssetManager.NewsControl
             InitializeComponent();
 
             Header.Content = newsItem.Header;
-            Text.Content = newsItem.Text;
+            Text.Text = newsItem.Text;
             Datetime.Content = newsItem.Datetime;
         }
     }

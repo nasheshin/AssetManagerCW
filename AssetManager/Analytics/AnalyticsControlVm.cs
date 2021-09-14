@@ -10,8 +10,7 @@ namespace AssetManager.Analytics
         
         public AnalyticsControlVm()
         {
-            var database = new DataContext();
-            var assetAnalytics = database.AssetAnalytics.ToList();
+            var assetAnalytics = App.DataProcessorAnalytics.AssetAnalytics;
             var convertedAnalytics = assetAnalytics.Where(analytic => analytic.Id != 3).Select(analytic => new
             {
                 AssetName = analytic.AssetName, BuyRate = analytic.StringBuyRate, 

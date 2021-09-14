@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -7,47 +6,44 @@ using System.Runtime.CompilerServices;
 using AssetManager.Annotations;
 using AssetManager.DataUtils;
 using AssetManager.Models;
-using AssetManager.Utils;
 
 namespace AssetManager.AssetControls
 {
-    public class PortfolioControlVm : INotifyPropertyChanged
+    public sealed class PortfolioControlVm : INotifyPropertyChanged
     {
         private readonly DataProcessorOperations _dataProcessorOperations;
-        private readonly DataContext _database;
+        private readonly DataProcessorBrokers _dataProcessorBrokers;
+        private readonly DataProcessorAnalytics _dataProcessorAnalytics;
+        
         private readonly SellAssetControlVm _sellAssetControlVm;
         private readonly BuyAssetControlVm _buyAssetControlVm;
-        
-        private List<Operation> _operations;
-        private List<Broker> _brokers;
-        private List<AssetAnalytic> _assetAnalytics;
-        
+
         private readonly ObservableCollection<PortfolioElementView> _portfolioView;
         private PortfolioElementView _selectedPortfolioElement;
         
         public PortfolioControlVm(SellAssetControlVm sellAssetControlVm, BuyAssetControlVm buyAssetControlVm)
         {
-            _dataProcessorOperations = MainWindow.DataProcessorOperations;
-            _dataProcessorOperations.DatabaseChanged += UpdateData;
-            _database = new DataContext();
             _sellAssetControlVm = sellAssetControlVm;
             _buyAssetControlVm = buyAssetControlVm;
             
-            _operations = _database.Operations.ToList();
-            _brokers = _database.Brokers.ToList();
-            _assetAnalytics = _database.AssetAnalytics.ToList();
+            _dataProcessorOperations = App.DataProcessorOperations;
+            _dataProcessorBrokers = App.DataProcessorBrokers;
+            _dataProcessorAnalytics = App.DataProcessorAnalytics;
             
-            var userOperations = _operations.Where(operation => operation.UserId == SessionInfo.UserId).ToList();
-            var groupedOperations = userOperations.GroupBy(operation =>
+            _dataProcessorOperations.DatabaseChanged += UpdateData;
+            
+            var groupedOperations = _dataProcessorOperations.Operations.GroupBy(operation =>
                 (operation.AssetName, operation.AssetType, operation.AssetTicker, operation.BrokerId)).ToList();
-            
+
+            var brokers = _dataProcessorBrokers.Brokers;
+            var analytics = _dataProcessorAnalytics.AssetAnalytics;
             var portfolio = groupedOperations.Select(g => new PortfolioElementView
             {
                 AssetName = g.Key.Item1, AssetTicker = g.Key.Item3, AssetType = g.Key.Item2,
-                BrokerName = _brokers.FirstOrDefault(broker => broker.Id == g.FirstOrDefault()?.BrokerId)?.Name,
+                BrokerName = brokers.FirstOrDefault(broker => broker.Id == g.FirstOrDefault()?.BrokerId)?.Name,
                 Count = g.Sum(o => o.Type),
-                BuyRate = _assetAnalytics.FirstOrDefault(analytic => analytic.Id == g.First().AssetAnalyticId)?.StringBuyRate,
-                SellRate = _assetAnalytics.FirstOrDefault(analytic => analytic.Id == g.First().AssetAnalyticId)?.StringSellRate,
+                BuyRate = analytics.FirstOrDefault(analytic => analytic.Id == g.First().AssetAnalyticId)?.StringBuyRate,
+                SellRate = analytics.FirstOrDefault(analytic => analytic.Id == g.First().AssetAnalyticId)?.StringSellRate,
                 Id = g.FirstOrDefault()?.Id
             }).Where(elem => elem.Count > 0).ToList();
 
@@ -72,9 +68,10 @@ namespace AssetManager.AssetControls
         
         private PortfolioElementView ConvertOperation(Operation operation)
         {
-            var brokerName = _brokers.FirstOrDefault(broker => broker.Id == operation.BrokerId)?.Name;
-            var buyRate = _assetAnalytics.FirstOrDefault(analytic => analytic.Id == operation.AssetAnalyticId)?.StringBuyRate;
-            var sellRate = _assetAnalytics.FirstOrDefault(analytic => analytic.Id == operation.AssetAnalyticId)?.StringSellRate;
+            var brokerName = _dataProcessorBrokers.Brokers.FirstOrDefault(broker => broker.Id == operation.BrokerId)?.Name;
+            var analytic = _dataProcessorAnalytics.AssetAnalytics.FirstOrDefault(a => a.Id == operation.AssetAnalyticId);
+            var buyRate = analytic?.StringBuyRate;
+            var sellRate = analytic?.StringSellRate;
 
             return new PortfolioElementView{
                 Id = operation.Id, AssetName = operation.AssetName, AssetTicker = operation.AssetTicker,
@@ -92,7 +89,7 @@ namespace AssetManager.AssetControls
             var sameAssetTicker = _portfolioView.Any(op => op.AssetTicker == commandInfo.Operation.AssetTicker);
             var sameAssetType = _portfolioView.Any(op => op.AssetType == commandInfo.Operation.AssetType);
             
-            var brokerName = _database.Brokers.FirstOrDefault(br => br.Id == commandInfo.Operation.BrokerId)?.Name;
+            var brokerName = _dataProcessorBrokers.Brokers.FirstOrDefault(br => br.Id == commandInfo.Operation.BrokerId)?.Name;
             if (brokerName == null)
                 return;
             
@@ -123,7 +120,7 @@ namespace AssetManager.AssetControls
 
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

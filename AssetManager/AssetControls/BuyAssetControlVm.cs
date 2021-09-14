@@ -12,7 +12,8 @@ namespace AssetManager.AssetControls
     public sealed class BuyAssetControlVm : INotifyPropertyChanged
     {
         private readonly DataProcessorOperations _dataProcessorOperations;
-        private readonly DataContext _database;
+        private readonly DataProcessorBrokers _dataProcessorBrokers;
+        private readonly DataProcessorAnalytics _dataProcessorAnalytics;
 
         private float _price;
         private int _count;
@@ -27,9 +28,9 @@ namespace AssetManager.AssetControls
 
         public BuyAssetControlVm()
         {
-            _dataProcessorOperations = MainWindow.DataProcessorOperations;
-
-            _database = new DataContext();
+            _dataProcessorOperations = App.DataProcessorOperations;
+            _dataProcessorBrokers = App.DataProcessorBrokers;
+            _dataProcessorAnalytics = App.DataProcessorAnalytics;
         }
 
         public string AssetName
@@ -112,8 +113,7 @@ namespace AssetManager.AssetControls
 
         public void SetControl(PortfolioElementView portfolioElement)
         {
-            var operations = _database.Operations.ToList();
-            _operationSample = operations.FirstOrDefault(op => op.Id == portfolioElement.Id);
+            _operationSample = _dataProcessorOperations.Operations.FirstOrDefault(op => op.Id == portfolioElement.Id);
 
 
             AssetName = portfolioElement.AssetName;
@@ -128,17 +128,14 @@ namespace AssetManager.AssetControls
         private void BuyAsset()
         {
             var operationToAdd = (Operation)_operationSample.Clone();
-            var broker = _database.Brokers.ToList().FirstOrDefault(br => br.Name.ToLower() == BrokerName.ToLower());
+            var broker = _dataProcessorBrokers.FindBrokerByName(BrokerName);
             if (broker == null)
             {
-                _database.Brokers.Add(new Broker {Name = BrokerName});
-                _database.SaveChanges();
-                broker = _database.Brokers.ToList().Last();
+                _dataProcessorBrokers.AddElement(new Broker {Name = BrokerName});
+                broker = _dataProcessorBrokers.Brokers.Last();
             }
 
-            var assetAnalytic = _database.AssetAnalytics.ToList()
-                .FirstOrDefault(an => an.AssetName.ToLower() == AssetName.ToLower());
-
+            var assetAnalytic = _dataProcessorAnalytics.FindAnalyticByName(AssetName);
             operationToAdd.AssetName = AssetName;
             operationToAdd.AssetTicker = AssetTicker;
             operationToAdd.AssetType = AssetType;

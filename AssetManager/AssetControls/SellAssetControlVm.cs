@@ -12,7 +12,6 @@ namespace AssetManager.AssetControls
     public class SellAssetControlVm : INotifyPropertyChanged
     {
         private readonly DataProcessorOperations _dataProcessorOperations;
-        private readonly DataContext _database;
 
         private float _price;
         private int _count;
@@ -24,9 +23,7 @@ namespace AssetManager.AssetControls
 
         public SellAssetControlVm()
         {
-            _dataProcessorOperations = MainWindow.DataProcessorOperations;
-
-            _database = new DataContext();
+            _dataProcessorOperations = App.DataProcessorOperations;
         }
 
         public string AssetInfo
@@ -79,8 +76,7 @@ namespace AssetManager.AssetControls
 
         public void SetControl(PortfolioElementView portfolioElement)
         {
-            var operations = _database.Operations.ToList();
-            _operationSample = operations.FirstOrDefault(op => op.Id == portfolioElement.Id);
+            _operationSample = _dataProcessorOperations.Operations.FirstOrDefault(op => op.Id == portfolioElement.Id);
 
             AssetInfo = portfolioElement.AssetName;
             Datetime = DateTime.Now.ToString("dd-MM-yyyy");

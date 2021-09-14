@@ -88,15 +88,15 @@
           <DependentUpon>SignInControl.xaml</DependentUpon>
         </Compile>
         <Compile Include="Authorization\SignInControlViewModel.cs" />
+        <Compile Include="DataUtils\DataProcessorAnalytics.cs" />
         <Compile Include="DataUtils\DataProcessorBase.cs" />
+        <Compile Include="DataUtils\DataProcessorBrokers.cs" />
         <Compile Include="DataUtils\DataProcessorFactory.cs" />
         <Compile Include="DataUtils\DataProcessorOperations.cs" />
         <Compile Include="DataUtils\DataProcessorType.cs" />
         <Compile Include="DataUtils\DataProcessorUsers.cs" />
-        <Compile Include="DataUtils\ErrorEventArgs.cs" />
         <Compile Include="DataUtils\IDatabaseUpdated.cs" />
         <Compile Include="DataUtils\OperationEventArgs.cs" />
-        <Compile Include="DataUtils\OperationsDataManager.cs" />
         <Compile Include="DataUtils\OperationCommandType.cs" />
         <Compile Include="NewsControl\NewsControl.xaml.cs">
           <DependentUpon>NewsControl.xaml</DependentUpon>

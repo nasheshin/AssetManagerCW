@@ -14,10 +14,9 @@ namespace AssetManager.Operations
     public sealed class OperationsControlViewModel : INotifyPropertyChanged
     {
         private readonly DataProcessorOperations _dataProcessorOperations;
-        private readonly DataContext _database;
-        private readonly List<Broker> _brokers;
-        private readonly List<AssetAnalytic> _assetAnalytics;
-        
+        private readonly DataProcessorBrokers _dataProcessorBrokers;
+        private readonly DataProcessorAnalytics _dataProcessorAnalytics;
+
         private readonly ObservableCollection<OperationView> _operationsView;
         private OperationView _selectedOperation;
         private RelayCommand _copyOperationCommand;
@@ -25,14 +24,13 @@ namespace AssetManager.Operations
 
         public OperationsControlViewModel()
         {
-            _dataProcessorOperations = MainWindow.DataProcessorOperations;
+            _dataProcessorOperations = App.DataProcessorOperations;
+            _dataProcessorBrokers = App.DataProcessorBrokers;
+            _dataProcessorAnalytics = App.DataProcessorAnalytics;
+            
             _dataProcessorOperations.DatabaseChanged += UpdateData;
-            _database = new DataContext();
-            _brokers = _database.Brokers.ToList();
-            _assetAnalytics = _database.AssetAnalytics.ToList();
-
-            var userOperations =
-                _database.Operations.ToList().Where(operation => operation.UserId == SessionInfo.UserId);
+            
+            var userOperations = _dataProcessorOperations.Operations;
             _operationsView = new ObservableCollection<OperationView>(userOperations.Select(ConvertOperation));
         }
 
@@ -66,7 +64,7 @@ namespace AssetManager.Operations
 
         private void CopyOperation()
         {
-            var operations = _database.Operations.ToList();
+            var operations = _dataProcessorOperations.Operations;
             var operationCopy = operations.FirstOrDefault(operation => operation.Id == SelectedOperation.Id);
             
             if (operationCopy == null)
@@ -77,7 +75,7 @@ namespace AssetManager.Operations
         
         private void RemoveOperation()
         {
-            var operations = _database.Operations.ToList();
+            var operations = _dataProcessorOperations.Operations;
             var operationRemove = operations.FirstOrDefault(operation => operation.Id == SelectedOperation.Id);
 
             if (operationRemove == null)
@@ -89,9 +87,10 @@ namespace AssetManager.Operations
         private OperationView ConvertOperation(Operation operation)
         {
             var typeName = operation.Type == 1 ? "Покупка" : "Продажа";
-            var brokerName = _brokers.FirstOrDefault(broker => broker.Id == operation.BrokerId)?.Name;
-            var buyRate = _assetAnalytics.FirstOrDefault(analytic => analytic.Id == operation.AssetAnalyticId)?.StringBuyRate;
-            var sellRate = _assetAnalytics.FirstOrDefault(analytic => analytic.Id == operation.AssetAnalyticId)?.StringSellRate;
+            var brokerName = _dataProcessorBrokers.Brokers.FirstOrDefault(br => br.Id == operation.BrokerId)?.Name;
+            var analytic = _dataProcessorAnalytics.AssetAnalytics.FirstOrDefault(a => a.Id == operation.AssetAnalyticId);
+            var buyRate = analytic?.StringBuyRate;
+            var sellRate = analytic?.StringSellRate;
 
             return new OperationView{
                 Id = operation.Id, AssetName = operation.AssetName, AssetTicker = operation.AssetTicker,

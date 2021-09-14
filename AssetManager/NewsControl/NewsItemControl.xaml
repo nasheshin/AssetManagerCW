@@ -5,12 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:AssetManager.AssetControls"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="100" d:DesignWidth="500">
     <Grid>
-        <StackPanel>
-            <Label Name="Header"/>
-            <Label Name="Text"/>
-            <Label Name="Datetime"/>
-        </StackPanel>
+        <Border Background="GhostWhite" BorderBrush="Gray" BorderThickness="1" Margin="10">
+            <StackPanel>
+                <WrapPanel>
+                    <Label Name="Header"/>
+                    <Label Name="Datetime" Content="01.01.0001"/>
+                </WrapPanel>
+                <TextBlock Name="Text" Width="500" TextWrapping="WrapWithOverflow" Margin="10">
+                    Text
+                </TextBlock>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

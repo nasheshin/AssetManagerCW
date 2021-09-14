@@ -9,10 +9,12 @@ namespace AssetManager
     /// </summary>
     public partial class App
     {
-        public static DataProcessorOperations DataProcessorOperations;
         public static DataProcessorUsers DataProcessorUsers;
+        public static DataProcessorOperations DataProcessorOperations;
+        public static DataProcessorBrokers DataProcessorBrokers;
+        public static DataProcessorAnalytics DataProcessorAnalytics;
 
-        private readonly DataProcessorFactory _dataProcessorFactory;
+        private static DataProcessorFactory _dataProcessorFactory;
         
         public App()
         {
@@ -20,14 +22,16 @@ namespace AssetManager
             CreateAuthWindowProcessors();
         }
 
+        public static void CreateMainWindowProcessors(int userId)
+        {
+            DataProcessorOperations = (DataProcessorOperations) _dataProcessorFactory.CreateProcessor(DataProcessorType.Operations, userId);
+            DataProcessorBrokers = (DataProcessorBrokers) _dataProcessorFactory.CreateProcessor(DataProcessorType.Brokers);
+            DataProcessorAnalytics = (DataProcessorAnalytics) _dataProcessorFactory.CreateProcessor(DataProcessorType.AssetAnalytics);
+        }
+        
         private void CreateAuthWindowProcessors()
         {
             DataProcessorUsers = (DataProcessorUsers) _dataProcessorFactory.CreateProcessor(DataProcessorType.Users);
-        }
-
-        private void CreateMainWindowProcessors()
-        {
-            
         }
     }
 }

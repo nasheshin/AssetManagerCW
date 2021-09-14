@@ -15,6 +15,10 @@ namespace AssetManager.DataUtils
         {
             switch (type)
             {
+                case DataProcessorType.AssetAnalytics:
+                    return new DataProcessorAnalytics(_database);
+                case DataProcessorType.Brokers:
+                    return new DataProcessorBrokers(_database);
                 case DataProcessorType.Operations:
                     return new DataProcessorOperations(_database, userId);
                 case DataProcessorType.Users:

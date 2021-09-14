@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:AssetManager.AssetControls"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="1000">
+             d:DesignHeight="500" d:DesignWidth="1000">
     <Grid>
         <WrapPanel>
             <ScrollViewer>
@@ -28,7 +28,7 @@
                     <local:BuyAssetControl x:Name="BuyAssetControl"/>
                 </Border>
                 <Border Background="GhostWhite" BorderBrush="Gray" BorderThickness="1" Margin="0, 10, 0, 0">
-                    <local:SellAssetControl x:Name="SellAssetControl" Margin="10, 10, 10, 10"/>
+                    <local:SellAssetControl x:Name="SellAssetControl" Margin="30, 10, 10, 10"/>
                 </Border>
             </StackPanel>
         </WrapPanel>
