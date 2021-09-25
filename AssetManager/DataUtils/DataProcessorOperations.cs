@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Core;
+using System.Data.Entity.ModelConfiguration;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AssetManager.Models;
 
 namespace AssetManager.DataUtils
 {
-    public class DataProcessorOperations : DataProcessorBase
+    public class DataProcessorOperations : DataProcessorBase, IValidate
     {
         private readonly int _userId;
         
@@ -27,6 +30,9 @@ namespace AssetManager.DataUtils
 
             if (operation.UserId != _userId)
                 throw new ArgumentException("Operation user id is not from current session");
+
+            if (!Validate(element))
+                throw new ValidationException("Element is not correct");
 
             Database.Operations.Add((Operation) operation.Clone());
             Save();
@@ -52,6 +58,14 @@ namespace AssetManager.DataUtils
             Save();
 
             OnDatabaseChanged(new OperationEventArgs(operation, OperationCommandType.Remove));
+        }
+        
+        public bool Validate(object element)
+        {
+            var operation = (Operation) element;
+            
+            const string pattern = "^[A-Z0-9]{1,50}$";
+            return Regex.IsMatch(operation.AssetTicker, pattern) && (operation.Datetime < DateTime.Now);
         }
         
         public event EventHandler DatabaseChanged;

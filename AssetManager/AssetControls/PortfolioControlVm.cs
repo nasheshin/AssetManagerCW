@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using AssetManager.Annotations;
 using AssetManager.DataUtils;
 using AssetManager.Models;
@@ -18,7 +19,7 @@ namespace AssetManager.AssetControls
         private readonly SellAssetControlVm _sellAssetControlVm;
         private readonly BuyAssetControlVm _buyAssetControlVm;
 
-        private readonly ObservableCollection<PortfolioElementView> _portfolioView;
+        private readonly ObservableCollection<PortfolioElementView> _portfolioViews;
         private PortfolioElementView _selectedPortfolioElement;
         
         public PortfolioControlVm(SellAssetControlVm sellAssetControlVm, BuyAssetControlVm buyAssetControlVm)
@@ -47,11 +48,13 @@ namespace AssetManager.AssetControls
                 Id = g.FirstOrDefault()?.Id
             }).Where(elem => elem.Count > 0).ToList();
 
-            _portfolioView = new ObservableCollection<PortfolioElementView>(portfolio);
-            SelectedPortfolioElement = _portfolioView.First();
+            _portfolioViews = new ObservableCollection<PortfolioElementView>(portfolio);
+            var firstElement = _portfolioViews.FirstOrDefault();
+            if (firstElement != null)
+                SelectedPortfolioElement = firstElement;
         }
 
-        public ObservableCollection<PortfolioElementView> PortfolioView => _portfolioView;
+        public ObservableCollection<PortfolioElementView> PortfolioViews => _portfolioViews;
         
         public PortfolioElementView SelectedPortfolioElement
         {
@@ -82,40 +85,46 @@ namespace AssetManager.AssetControls
 
         private void UpdateData(object sender, EventArgs e)
         {
-            if (!(e is OperationEventArgs commandInfo))
-                return;
-
-            var sameAssetName = _portfolioView.Any(op => op.AssetName == commandInfo.Operation.AssetName);
-            var sameAssetTicker = _portfolioView.Any(op => op.AssetTicker == commandInfo.Operation.AssetTicker);
-            var sameAssetType = _portfolioView.Any(op => op.AssetType == commandInfo.Operation.AssetType);
-            
-            var brokerName = _dataProcessorBrokers.Brokers.FirstOrDefault(br => br.Id == commandInfo.Operation.BrokerId)?.Name;
-            if (brokerName == null)
-                return;
-            
-            var sameBrokerName = _portfolioView.Any(op => op.BrokerName == brokerName);
-
-            var isOperationAdded = commandInfo.CommandType == OperationCommandType.Add;
-            var isOperationTypeBuy = commandInfo.Operation.Type == 1;
-            var sameElement = sameAssetName && sameAssetTicker && sameAssetType && sameBrokerName;
-
-            switch (isOperationAdded)
+            try
             {
-                case false when !sameElement:
-                    throw new Exception("There is a try to remove an element which don't exist");
-                case true when !sameElement:
-                    _portfolioView.Add(ConvertOperation(commandInfo.Operation));
+                if (!(e is OperationEventArgs commandInfo))
                     return;
-            }
 
-            var portfolioElementView =
-                _portfolioView.First(op => op.AssetName == commandInfo.Operation.AssetName);
-            _portfolioView.Remove(portfolioElementView);
-            portfolioElementView.Count += isOperationAdded == isOperationTypeBuy ? 1 : -1;
-            _portfolioView.Add(portfolioElementView);
-            
-            if (portfolioElementView.Count <= 0)
-                _portfolioView.Remove(portfolioElementView);
+                var sameAssetName = _portfolioViews.Any(op => op.AssetName == commandInfo.Operation.AssetName);
+                var sameAssetTicker = _portfolioViews.Any(op => op.AssetTicker == commandInfo.Operation.AssetTicker);
+                var sameAssetType = _portfolioViews.Any(op => op.AssetType == commandInfo.Operation.AssetType);
+
+                var brokerName = _dataProcessorBrokers.Brokers
+                    .FirstOrDefault(br => br.Id == commandInfo.Operation.BrokerId)?.Name;
+                if (brokerName == null)
+                    return;
+
+                var sameBrokerName = _portfolioViews.Any(op => op.BrokerName == brokerName);
+
+                var isOperationAdded = commandInfo.CommandType == OperationCommandType.Add;
+                var isOperationTypeBuy = commandInfo.Operation.Type == 1;
+                var sameElement = sameAssetName && sameAssetTicker && sameAssetType && sameBrokerName;
+
+                switch (isOperationAdded)
+                {
+                    case false when !sameElement:
+                        throw new Exception("There is a try to remove an element which don't exist");
+                    case true when !sameElement:
+                        _portfolioViews.Add(ConvertOperation(commandInfo.Operation));
+                        return;
+                }
+
+                var portfolioElementView =
+                    _portfolioViews.First(op => op.AssetName == commandInfo.Operation.AssetName);
+                _portfolioViews.Remove(portfolioElementView);
+                portfolioElementView.Count += isOperationAdded == isOperationTypeBuy ? 1 : -1;
+                _portfolioViews.Add(portfolioElementView);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

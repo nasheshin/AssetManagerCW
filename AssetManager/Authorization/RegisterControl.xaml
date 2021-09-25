@@ -30,8 +30,8 @@
         </StackPanel>
         
         <TextBox Grid.Row="0" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=UserName}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=Password}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=PasswordRepeat}"/>
+        <PasswordBox Grid.Row="1" Grid.Column="1" Width="100" Height="20" PasswordChanged="OnPasswordChanged"/>
+        <PasswordBox Grid.Row="2" Grid.Column="1" Width="100" Height="20" PasswordChanged="OnPasswordRepeatChanged"/>
         
         <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Зарегистрироваться" Width="120" Height="25"
                 Command="{Binding RegisterCommand}"/>

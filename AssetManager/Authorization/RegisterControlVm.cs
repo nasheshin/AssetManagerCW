@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -9,7 +11,7 @@ using AssetManager.Utils;
 
 namespace AssetManager.Authorization
 {
-    public class RegisterControlViewModel : INotifyPropertyChanged
+    public class RegisterControlVm : INotifyPropertyChanged
     {
         private readonly DataProcessorUsers _dataProcessorUsers;
         
@@ -19,7 +21,7 @@ namespace AssetManager.Authorization
         
         private RelayCommand _registerCommand;
 
-        public RegisterControlViewModel()
+        public RegisterControlVm()
         {
             _dataProcessorUsers = App.DataProcessorUsers;
         }
@@ -64,22 +66,34 @@ namespace AssetManager.Authorization
 
         private void Register()
         {
-            if (_password != _passwordRepeat)
+            try
             {
-                MessageBox.Show("Пароли не совпадают");
-                return;
-            }
-            
-            var foundUserName = _dataProcessorUsers.Users.FirstOrDefault(user => user.Name == _userName);
-            if (foundUserName != null)
-            {
-                MessageBox.Show("Данное имя пользователя занято");
-                return;
-            }
+                if (_password != _passwordRepeat)
+                {
+                    MessageBox.Show(Localization.Message.DifferentPasswords);
+                    return;
+                }
 
-            _dataProcessorUsers.AddElement(new User {Name = _userName, Password = _password});
-            
-            MessageBox.Show("Регистрация прошла успешно");
+                var foundUserName = _dataProcessorUsers.Users.FirstOrDefault(user => user.Name == _userName);
+                if (foundUserName != null)
+                {
+                    MessageBox.Show(Localization.Message.UsernameEngaged);
+                    return;
+                }
+
+                _dataProcessorUsers.AddElement(new User {Name = _userName, Password = _password});
+
+                MessageBox.Show(Localization.Message.RegistrationSuccessful);
+            }
+            catch (ValidationException)
+            {
+                MessageBox.Show(Localization.Message.NotCorrectRegisterFields);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
+            }
         }
         
         

@@ -1,17 +1,14 @@
-﻿using System.Linq;
-using AssetManager.Models;
-
-namespace AssetManager.SocialPage
+﻿namespace AssetManager.SocialPage
 {
     public partial class SocialPageControl
     {
         public SocialPageControl()
         {
             InitializeComponent();
-            
-            var database = new DataContext();
 
-            foreach (var post in database.Posts)
+            var dataProcessorPosts = App.DataProcessorPosts;
+
+            foreach (var post in dataProcessorPosts.Posts)
             {
                 Posts.Children.Add(new PostControl(post));
             }

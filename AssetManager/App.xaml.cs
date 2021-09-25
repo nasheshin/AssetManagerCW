@@ -13,6 +13,9 @@ namespace AssetManager
         public static DataProcessorOperations DataProcessorOperations;
         public static DataProcessorBrokers DataProcessorBrokers;
         public static DataProcessorAnalytics DataProcessorAnalytics;
+        public static DataProcessorPosts DataProcessorPosts;
+        public static DataProcessorNewsItems DataProcessorNewsItems;
+        public static DataProcessorLogs DataProcessorLogs;
 
         private static DataProcessorFactory _dataProcessorFactory;
         
@@ -27,6 +30,9 @@ namespace AssetManager
             DataProcessorOperations = (DataProcessorOperations) _dataProcessorFactory.CreateProcessor(DataProcessorType.Operations, userId);
             DataProcessorBrokers = (DataProcessorBrokers) _dataProcessorFactory.CreateProcessor(DataProcessorType.Brokers);
             DataProcessorAnalytics = (DataProcessorAnalytics) _dataProcessorFactory.CreateProcessor(DataProcessorType.AssetAnalytics);
+            DataProcessorPosts = (DataProcessorPosts) _dataProcessorFactory.CreateProcessor(DataProcessorType.Posts, userId);
+            DataProcessorNewsItems = (DataProcessorNewsItems) _dataProcessorFactory.CreateProcessor(DataProcessorType.NewsItems);
+            DataProcessorLogs = (DataProcessorLogs) _dataProcessorFactory.CreateProcessor(DataProcessorType.Logs, userId);
         }
         
         private void CreateAuthWindowProcessors()

@@ -9,9 +9,9 @@ namespace AssetManager.SocialPage
         {
             InitializeComponent();
             
-            var database = new DataContext();
-            
-            User.Content = database.Users.ToList().FirstOrDefault(user => user.Id == post.UserId)?.Name;
+            var dataProcessorUsers = App.DataProcessorUsers;
+
+            User.Content = dataProcessorUsers.Users.FirstOrDefault(user => user.Id == post.UserId)?.Name;
             Text.Text = post.Text;
             Datetime.Content = post.Datetime;
         }

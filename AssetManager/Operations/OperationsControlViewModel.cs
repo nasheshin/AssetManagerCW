@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using AssetManager.Annotations;
 using AssetManager.DataUtils;
 using AssetManager.Models;
@@ -64,24 +66,40 @@ namespace AssetManager.Operations
 
         private void CopyOperation()
         {
-            var operations = _dataProcessorOperations.Operations;
-            var operationCopy = operations.FirstOrDefault(operation => operation.Id == SelectedOperation.Id);
-            
-            if (operationCopy == null)
-                return;
+            try
+            {
+                var operations = _dataProcessorOperations.Operations;
+                var operationCopy = operations.FirstOrDefault(operation => operation.Id == SelectedOperation.Id);
 
-            _dataProcessorOperations.AddElement(operationCopy);
+                if (operationCopy == null)
+                    return;
+
+                _dataProcessorOperations.AddElement(operationCopy);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
+            }
         }
         
         private void RemoveOperation()
         {
-            var operations = _dataProcessorOperations.Operations;
-            var operationRemove = operations.FirstOrDefault(operation => operation.Id == SelectedOperation.Id);
+            try
+            {
+                var operations = _dataProcessorOperations.Operations;
+                var operationRemove = operations.FirstOrDefault(operation => operation.Id == SelectedOperation.Id);
 
-            if (operationRemove == null)
-                return;
-            
-            _dataProcessorOperations.RemoveElement(operationRemove);
+                if (operationRemove == null)
+                    return;
+                
+                _dataProcessorOperations.RemoveElement(operationRemove);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
+            }
         }
             
         private OperationView ConvertOperation(Operation operation)
@@ -101,18 +119,26 @@ namespace AssetManager.Operations
         
         private void UpdateData(object sender, EventArgs e)
         {
-            if (!(e is OperationEventArgs commandInfo))
-                return;
+            try
+            {
+                if (!(e is OperationEventArgs commandInfo))
+                    return;
 
-            if (commandInfo.CommandType == OperationCommandType.Add)
-            {
-                _operationsView.Add(ConvertOperation(commandInfo.Operation));
+                if (commandInfo.CommandType == OperationCommandType.Add)
+                {
+                    _operationsView.Add(ConvertOperation(commandInfo.Operation));
+                }
+                else
+                {
+                    var removedOperationView =
+                        _operationsView.FirstOrDefault(operation => operation.Id == commandInfo.Operation.Id);
+                    _operationsView.Remove(removedOperationView);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var removedOperationView =
-                    _operationsView.FirstOrDefault(operation => operation.Id == commandInfo.Operation.Id);
-                _operationsView.Remove(removedOperationView);
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
             }
         }
 

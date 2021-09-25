@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using AssetManager.Annotations;
+using AssetManager.DataUtils;
 using AssetManager.Models;
 using AssetManager.Utils;
 
@@ -10,8 +13,8 @@ namespace AssetManager.SocialPage
 {
     public class SocialPageControlVm : INotifyPropertyChanged
     {
-        private readonly DataContext _database;
-        private StackPanel _postsPanel;
+        private readonly DataProcessorPosts _dataProcessorPosts;
+        private readonly StackPanel _postsPanel;
         
         private string _postText;
 
@@ -19,7 +22,7 @@ namespace AssetManager.SocialPage
         
         public SocialPageControlVm(StackPanel postsPanel)
         {
-            _database = new DataContext();
+            _dataProcessorPosts = App.DataProcessorPosts;
             _postsPanel = postsPanel;
         }
 
@@ -43,11 +46,22 @@ namespace AssetManager.SocialPage
 
         private void AddPost()
         {
-            var post = new Post {Text = PostText, Datetime = DateTime.Now, UserId = SessionInfo.UserId};
-            
-            _database.Posts.Add(post);
-            _database.SaveChanges();
-            _postsPanel.Children.Insert(0, new PostControl(post));
+            try
+            {
+                var post = new Post {Text = PostText, Datetime = DateTime.Now};
+
+                _dataProcessorPosts.AddElement(post);
+                _postsPanel.Children.Insert(0, new PostControl(post));
+            }
+            catch (ValidationException)
+            {
+                MessageBox.Show(Localization.Message.NotCorrectPost);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
+            }
         }
         
         public event PropertyChangedEventHandler PropertyChanged;

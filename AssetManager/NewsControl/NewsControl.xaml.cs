@@ -1,7 +1,4 @@
-﻿using AssetManager.AssetControls;
-using AssetManager.Models;
-
-namespace AssetManager.NewsControl
+﻿namespace AssetManager.NewsControl
 {
     public partial class NewsControl
     {
@@ -9,9 +6,9 @@ namespace AssetManager.NewsControl
         {
             InitializeComponent();
 
-            var database = new DataContext();
+            var dataProcessorNewsItems = App.DataProcessorNewsItems;
 
-            foreach (var newsItem in database.NewsItems)
+            foreach (var newsItem in dataProcessorNewsItems.NewsItems)
             {
                 NewsItems.Children.Add(new NewsItemControl(newsItem));
             }

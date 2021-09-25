@@ -34,7 +34,7 @@
         <TextBox Grid.Row="2" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=AssetType}"/>
         <TextBox Grid.Row="3" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=BrokerName}"/>
         <TextBox Grid.Row="4" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=Price}"/>
-        <TextBox Grid.Row="5" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=Datetime, StringFormat=dd-MM-yyyy}"/>
+        <DatePicker Grid.Row="5" Grid.Column="1" Width="100" Height="20" SelectedDateChanged="OnDateChanged"/>
         <TextBox Grid.Row="6" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=Count}"/>
         
         

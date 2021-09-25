@@ -23,6 +23,12 @@ namespace AssetManager.DataUtils
                     return new DataProcessorOperations(_database, userId);
                 case DataProcessorType.Users:
                     return new DataProcessorUsers(_database);
+                case DataProcessorType.Posts:
+                    return new DataProcessorPosts(_database, userId);
+                case DataProcessorType.NewsItems:
+                    return new DataProcessorNewsItems(_database);
+                case DataProcessorType.Logs:
+                    return new DataProcessorLogs(_database, userId);
             }
 
             return null;

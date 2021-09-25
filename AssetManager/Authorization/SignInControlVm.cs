@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -9,7 +10,7 @@ using AssetManager.Utils;
 
 namespace AssetManager.Authorization
 {
-    public class SignInControlViewModel
+    public class SignInControlVm
     {
         private readonly DataProcessorUsers _dataProcessorUsers;
         
@@ -18,7 +19,7 @@ namespace AssetManager.Authorization
         
         private RelayCommand _signInCommand;
 
-        public SignInControlViewModel()
+        public SignInControlVm()
         {
             _dataProcessorUsers = App.DataProcessorUsers;
         }
@@ -53,21 +54,23 @@ namespace AssetManager.Authorization
 
         private void SignIn()
         {
-            var foundUserName = _dataProcessorUsers.Users.FirstOrDefault(user => user.Name == _userName);
-            if (foundUserName == null)
+            User foundUserName;
+            try
             {
-                MessageBox.Show("Неверный логин или пароль");
+                foundUserName = _dataProcessorUsers.Users.FirstOrDefault(user => user.Name == _userName);
+                if (foundUserName == null || foundUserName.Password != _password)
+                {
+                    MessageBox.Show(Localization.Message.WrongUsernameOrPassword);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
                 return;
             }
 
-            if (foundUserName.Password != _password)
-            {
-                MessageBox.Show("Неверный логин или пароль");
-                return;
-            }
-
-            SessionInfo.UserId = foundUserName.Id;
-            
             var mainWindow = new MainWindow(Application.Current.MainWindow, foundUserName.Id);
             mainWindow.Show();
             Application.Current.MainWindow?.Hide();

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using AssetManager.Annotations;
 using AssetManager.DataUtils;
 using AssetManager.Models;
@@ -86,13 +88,25 @@ namespace AssetManager.AssetControls
 
         private void SellAsset()
         {
-            var operationToAdd = (Operation)_operationSample.Clone();
-            operationToAdd.Datetime = DateTime.Parse(Datetime);
-            operationToAdd.Price = Price;
-            operationToAdd.Type = -1;
+            try
+            {
+                var operationToAdd = (Operation)_operationSample.Clone();
+                operationToAdd.Datetime = DateTime.Parse(Datetime);
+                operationToAdd.Price = Price;
+                operationToAdd.Type = -1;
 
-            for (var i = 0; i < Count; i++)
-                _dataProcessorOperations.AddElement(operationToAdd);
+                for (var i = 0; i < Count; i++)
+                    _dataProcessorOperations.AddElement(operationToAdd);
+            }
+            catch (ValidationException)
+            {
+                MessageBox.Show(Localization.Message.NotCorrectOperation);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

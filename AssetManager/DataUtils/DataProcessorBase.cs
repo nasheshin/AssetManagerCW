@@ -1,15 +1,16 @@
-﻿using AssetManager.Models;
+﻿using System;
+using AssetManager.Models;
 
 namespace AssetManager.DataUtils
 {
-    public abstract class DataProcessorBase
+    public abstract class DataProcessorBase : IDisposable
     {
         protected DataProcessorBase(DataContext database)
         {
             Database = database;
         }
         
-        protected DataContext Database;
+        protected readonly DataContext Database;
 
         public abstract void AddElement(object element);
 
@@ -18,6 +19,11 @@ namespace AssetManager.DataUtils
         protected void Save()
         {
             Database.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            Database?.Dispose();
         }
     }
 }

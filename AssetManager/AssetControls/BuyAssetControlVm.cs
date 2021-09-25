@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using AssetManager.Annotations;
 using AssetManager.DataUtils;
 using AssetManager.Models;
@@ -115,7 +117,6 @@ namespace AssetManager.AssetControls
         {
             _operationSample = _dataProcessorOperations.Operations.FirstOrDefault(op => op.Id == portfolioElement.Id);
 
-
             AssetName = portfolioElement.AssetName;
             AssetTicker = portfolioElement.AssetTicker;
             AssetType = portfolioElement.AssetType;
@@ -127,26 +128,38 @@ namespace AssetManager.AssetControls
 
         private void BuyAsset()
         {
-            var operationToAdd = (Operation)_operationSample.Clone();
-            var broker = _dataProcessorBrokers.FindBrokerByName(BrokerName);
-            if (broker == null)
+            try
             {
-                _dataProcessorBrokers.AddElement(new Broker {Name = BrokerName});
-                broker = _dataProcessorBrokers.Brokers.Last();
+                var operationToAdd = (Operation) _operationSample.Clone();
+                var broker = _dataProcessorBrokers.FindBrokerByName(BrokerName);
+                if (broker == null)
+                {
+                    _dataProcessorBrokers.AddElement(new Broker {Name = BrokerName});
+                    broker = _dataProcessorBrokers.Brokers.Last();
+                }
+
+                var assetAnalytic = _dataProcessorAnalytics.FindAnalyticByName(AssetName);
+                operationToAdd.AssetName = AssetName;
+                operationToAdd.AssetTicker = AssetTicker;
+                operationToAdd.AssetType = AssetType;
+                operationToAdd.Datetime = DateTime.Parse(Datetime);
+                operationToAdd.Type = 1;
+                operationToAdd.Price = Price;
+                operationToAdd.BrokerId = broker.Id;
+                operationToAdd.AssetAnalyticId = assetAnalytic?.Id ?? 3;
+
+                for (var i = 0; i < Count; i++)
+                    _dataProcessorOperations.AddElement(operationToAdd);
             }
-
-            var assetAnalytic = _dataProcessorAnalytics.FindAnalyticByName(AssetName);
-            operationToAdd.AssetName = AssetName;
-            operationToAdd.AssetTicker = AssetTicker;
-            operationToAdd.AssetType = AssetType;
-            operationToAdd.Datetime = DateTime.Parse(Datetime);
-            operationToAdd.Type = 1;
-            operationToAdd.Price = Price;
-            operationToAdd.BrokerId = broker.Id;
-            operationToAdd.AssetAnalyticId = assetAnalytic?.Id ?? 3;
-
-            for (var i = 0; i < Count; i++)
-                _dataProcessorOperations.AddElement(operationToAdd);
+            catch (ValidationException)
+            {
+                MessageBox.Show(Localization.Message.NotCorrectOperation);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                MessageBox.Show(Localization.Error.Standard);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

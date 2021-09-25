@@ -20,7 +20,7 @@
         <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Пароль:"/>
         
         <TextBox Grid.Row="0" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=UserName}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Width="100" Height="20" Text="{Binding Path=Password}"/>
+        <PasswordBox Grid.Row="1" Grid.Column="1" Width="100" Height="20" PasswordChanged="OnPasswordChanged"/>
         
         <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Войти" Width="120" Height="25" 
                 Command="{Binding SignInCommand}"/>
