@@ -9,7 +9,7 @@
     <Grid>
         <WrapPanel>
             <ScrollViewer>
-                <DataGrid ItemsSource="{Binding PortfolioView}" AutoGenerateColumns="False" IsReadOnly="True"
+                <DataGrid ItemsSource="{Binding PortfolioViews}" AutoGenerateColumns="False" IsReadOnly="True"
                           CanUserAddRows="False" SelectedItem="{Binding SelectedPortfolioElement}"
                           CanUserResizeColumns="False">
                     <DataGrid.Columns>

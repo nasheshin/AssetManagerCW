@@ -13,7 +13,7 @@ using AssetManager.Utils;
 
 namespace AssetManager.Operations
 {
-    public sealed class OperationsControlViewModel : INotifyPropertyChanged
+    public sealed class OperationsControlVm : INotifyPropertyChanged
     {
         private readonly DataProcessorOperations _dataProcessorOperations;
         private readonly DataProcessorBrokers _dataProcessorBrokers;
@@ -24,7 +24,7 @@ namespace AssetManager.Operations
         private RelayCommand _copyOperationCommand;
         private RelayCommand _removeOperationCommand;
 
-        public OperationsControlViewModel()
+        public OperationsControlVm()
         {
             _dataProcessorOperations = App.DataProcessorOperations;
             _dataProcessorBrokers = App.DataProcessorBrokers;
@@ -112,7 +112,7 @@ namespace AssetManager.Operations
 
             return new OperationView{
                 Id = operation.Id, AssetName = operation.AssetName, AssetTicker = operation.AssetTicker,
-                AssetType = operation.AssetType, Datetime = operation.Datetime, Type = typeName, Price = operation.Price,
+                AssetType = operation.AssetType, Datetime = operation.Datetime.ToString("dd-MM-yyyy"), Type = typeName, Price = operation.Price,
                 BrokerName = brokerName, BuyRate = buyRate, SellRate = sellRate
             };
         }

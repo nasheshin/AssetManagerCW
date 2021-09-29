@@ -112,7 +112,7 @@
         <Compile Include="Operations\OperationsControl.xaml.cs">
           <DependentUpon>OperationsControl.xaml</DependentUpon>
         </Compile>
-        <Compile Include="Operations\OperationsControlViewModel.cs" />
+        <Compile Include="Operations\OperationsControlVm.cs" />
         <Compile Include="Operations\OperationView.cs" />
         <Compile Include="SocialPage\PostControl.xaml.cs">
           <DependentUpon>PostControl.xaml</DependentUpon>

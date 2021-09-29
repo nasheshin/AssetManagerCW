@@ -2,12 +2,12 @@
 {
     public partial class OperationsControl
     {
-        private readonly OperationsControlViewModel _viewModel;
+        private readonly OperationsControlVm _vm;
         
         public OperationsControl()
         {
-            _viewModel = new OperationsControlViewModel();
-            DataContext = _viewModel;
+            _vm = new OperationsControlVm();
+            DataContext = _vm;
             
             InitializeComponent();
         }

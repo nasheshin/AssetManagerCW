@@ -1,4 +1,5 @@
-﻿using AssetManager.Models;
+﻿using System;
+using AssetManager.Models;
 
 namespace AssetManager.DataUtils
 {
@@ -29,9 +30,9 @@ namespace AssetManager.DataUtils
                     return new DataProcessorNewsItems(_database);
                 case DataProcessorType.Logs:
                     return new DataProcessorLogs(_database, userId);
+                default:
+                    return null;
             }
-
-            return null;
         }
     }
 }

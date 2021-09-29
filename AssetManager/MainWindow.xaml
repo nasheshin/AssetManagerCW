@@ -9,7 +9,7 @@
         xmlns:analytics="clr-namespace:AssetManager.Analytics"
         xmlns:operations="clr-namespace:AssetManager.Operations"
         mc:Ignorable="d"
-        Title="MainWindow" Height="520" Width="1000"
+        Title="Invest Manager Inc." Height="520" Width="1000"
         Closed="OnMainWindowClosed">
     <Grid>
         <TabControl>
